@@ -1,0 +1,26 @@
+.login-page {
+    width: 360px;
+    padding: 8% 0 0;
+    margin: auto;
+}
+
+#btn-login {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    width: 85%;
+}
+
+html,
+body,
+.container-table {
+    height: 100%
+}
+
+.container-table {
+    display: table;
+}
+
+.vertical-center-row {
+    display: table-cell;
+    vertical-align: middle;
+}
