@@ -1,5 +1,9 @@
-$(document).ready(function(){
+$(document).ready(function() {
 
-	console.log('ready');
-	
+    console.log('ready');
+
 });
+
+toastr.options = {
+    "closeButton": true
+}

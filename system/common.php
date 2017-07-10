@@ -305,6 +305,6 @@ function convertTime($time){
 }
 
 function getUserData(){
-    return isset($_SESSION['user']) ? $_SESSION['user'] : array();
+    return isset($_SESSION['username']) ? $_SESSION['username'] : array();
 }
 ?>

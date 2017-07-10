@@ -11,7 +11,7 @@ class WCMSetting {
 	static $HIDE_BRAND = true;
 
 	//---------- Section 1: Database and Host configuration --------
-	static $DEFAULT_DATABASE_CONNECTION_STRING  = "localhost::test::root::Ri4nYO0jmSw51HJZHWJ69EsyNVg6079x2Tr8kCp9+RY=::mysql";
+	static $DEFAULT_DATABASE_CONNECTION_STRING  = "localhost::db_news::root::Ri4nYO0jmSw51HJZHWJ69EsyNVg6079x2Tr8kCp9+RY=::mysql";
 
 	//---------- Section 1.1: Revision configuration --------
 	static $MAX_SAVE_REVISION  = 10;

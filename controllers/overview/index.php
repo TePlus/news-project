@@ -4,12 +4,17 @@ use OMCore\OM;
 $DB = OMDb::singleton();
 
 
-	$id = 3;
-	$sql = "select * from news where news_id = @id";
-	$sql_param = array();
-	$sql_param['id'] = $id;
-	$ds = null;
-	$res = $DB->query($ds,$sql,$sql_param,0,-1,"ASSOC");
+	// $id = 3;
+	// $sql = "select * from news where news_id = @id";
+	// $sql_param = array();
+	// $sql_param['id'] = $id;
+	// $ds = null;
+	// $res = $DB->query($ds,$sql,$sql_param,0,-1,"ASSOC");
+
+
+	// $user = getUserData();
+	// var_dump($user);
+	// exit();
 
 	$obj = new CRUD($DB);
 	$obj->index();
@@ -49,28 +54,19 @@ $DB = OMDb::singleton();
 	}
 
 	function index(){
-		
-		$username = "teplus";
-		$password = "1234";
-		
-		$sql = "select * from users where username = @username";
-		$sql_param = array();
-		$sql_param['username'] = $username;
-		$sql_param['password'] = $password;
-		$ds = null;
-		$res = $this->db->query($ds,$sql,$sql_param,0,-1,"ASSOC");
+			$id = 1;
+			$sql = "select * from news";
+			$sql_param = array();
+			$sql_param['id'] = $id;
+			$ds = null;
+			$res = $this->db->query($ds,$sql,$sql_param,0,-1,"ASSOC");
 
-		if($res == 2){
-			var_dump("HelloWorld");
+			var_dump($ds);
 			exit();
-		}
-
-
-
-	
+			}
 	}
-}
 
+?>
 
 // $PAGE_VAR["css"][] = "overview";
 
@@ -120,5 +116,4 @@ $DB = OMDb::singleton();
 // var_dump($r);
 // $DB->executeUpdate('product, $KeyCount, $ParamList = null);
 
-?>
 <div id="test" style="color:red;">XXXXXX</div>

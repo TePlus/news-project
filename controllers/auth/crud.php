@@ -1,118 +1,108 @@
 <?php
 
-class CRUD{
+class CRUD
+{
 
-	private $db;
-	private $response = array();
+    private $db;
 
-	function __construct($db)
-	{
-		$this->db = $db;
-		$this->response['status'] = false;
-	}
+    function __construct($db)
+    {
+        $this->db = $db;
+    }
 
-	public function login($strUsernanme, $strPassword){
+    public function login($strUsernanme, $strPassword, $strRemember)
+    {
 
-		$error = false;
+        $response['status'] = false;
 
-		// clean user inputs to prevent sql injections
-		$username = trim($strUsernanme);
-		$username = strip_tags($strUsernanme);
-		$username = htmlspecialchars($strUsernanme);
+        $error = false;
 
-		$pass = trim($strPassword);
-		$pass = strip_tags($strPassword);
-		$pass = htmlspecialchars($strPassword);
+        // clean user inputs to prevent sql injections
+        $username = trim($strUsernanme);
+        $username = strip_tags($strUsernanme);
+        $username = htmlspecialchars($strUsernanme);
 
-		if(empty($username)){
-			$error = true;
-			$usernameError = "Please enter your username.";
-		}
-			
-		if(empty($pass)){
-			$error = true;
-			$passError = "Please enter your password.";
-		}
+        $pass = trim($strPassword);
+        $pass = strip_tags($strPassword);
+        $pass = htmlspecialchars($strPassword);
 
-		// name validation 
-		// if(empty($username)){
-		// 	$error = true;
-   		// 	$usernameError = "Please enter your full name.";
-		// }else if (strlen($name) < 3) {
-		// 	$error = true;
-		// 	$nameError = "Name must have atleat 3 characters.";
-		// } else if (!preg_match("/^[a-zA-Z ]+$/",$name)) {
-		// 	$error = true;
-		// 	$nameError = "Name must contain alphabets and space.";
-		// }
+        if (empty($username)) {
+            $error = true;
+            $usernameError = "Please enter your username.";
+        }
 
-		// password validation
-		// if (empty($password)){
-		// 	$error = true;
-		// 	$passError = "Please enter password.";
-		// } else if(strlen($password) < 6) {
-		// 	$error = true;
-		// 	$passError = "Password must have atleast 6 characters.";
-		// }
+        if (empty($pass)) {
+            $error = true;
+            $passError = "Please enter your password.";
+        }
 
-		// username password example
-		$username = "teplus";
-		$pass = "1234";
+        // username password example
+        // $username = "teplus";
+        // $pass = "1234";
 
-		// password encrypt using SHA256();
-		//$password = hash('sha256', $pass);
+        // password encrypt using SHA256();
+        //$password = hash('sha256', $pass);
 
-		// password encrypt using md5();
-		$password = md5($pass);
+        // password encrypt using md5();
+        $password = md5($pass);
 
-		if(!$error){
-			$sql = "select * from users where username = @username";
-			$sql_param = array();
-			$sql_param['username'] = $username;
-			$sql_param['password'] = $password;
-			$ds = null;
-			$res = $this->db->query($ds,$sql,$sql_param,0,-1,"ASSOC");
+        if (!$error) {
+            $sql = "select * from users where username = @username";
+            $sql_param = array();
+            $sql_param['username'] = $username;
+            $sql_param['password'] = $password;
+            $ds = null;
+            $res = $this->db->query($ds, $sql, $sql_param, 0, -1, "ASSOC");
 
-			if($res != -1){
+            $response['data'] = array();
 
-				$errTyp = "success";
-    			$errMSG = "Successfully login";
+            if ($res != -1) {
 
-				if($res == 1 && $ds[0]['password'] == $password){
+                if ($res == 1 && $ds[0]['password'] == $password) {
 
-					// SESSION
-					$_SESSION['user'] = $row['userId'];
+                    //ready to login
+                    $_SESSION['user_id'] = $ds[0]['user_id'];
+                    $_SESSION['username'] = $ds[0]['username'];
+                    $_SESSION['user_status'] = $ds[0]['status'];
 
-					$errTyp = "success";
-					$errMSG = "Successfully Login";
+                    //check to see if remember, ie if cookie
+                    if (isset($strRemember)) {
+                        //set the cookies for 1 day, ie, 1*24*60*60 secs
+                        //change it to something like 30*24*60*60 to remember user for 30 days
+                        setcookie('username', $username, time() + 1 * 24 * 60 * 60);
+                        setcookie('password', $password, time() + 1 * 24 * 60 * 60);
 
-					// $_SESSION['ses_userid'] = $ds[0]['user_id'];
-					// $_SESSION['ses_username'] = $ds[0]['username'];    
-					// $_SESSION['ses_status'] = $ds[0]['status'];  
+                        // response data
+                        $response['status'] = true;
 
-					$response['data'] = array();
-					$response['status'] = true;
-					$response['data']['username'] = $ds[0]['username'];
-					$response['data']['password'] = $ds[0]['password'];
-					$response['data']['status'] = $ds[0]['status'];
-					$response['data']['created_at'] = $ds[0]['created_at'];
-					$response['data']['updated_at'] = $ds[0]['updated_at'];
-				}else{
-					$errTyp = "danger";
-    				$errMSG = "Something went wrong, try again later..."; 
-				}
-			}else{
-            	$errMSG = "Incorrect Credentials, Try again...";
-			}
-		}
+                        $response['data']['username'] = $ds[0]['username'];
+                        $response['data']['password'] = $ds[0]['password'];
+                        $response['data']['status'] = $ds[0]['status'];
+                        $response['data']['created_at'] = $ds[0]['created_at'];
+                        $response['data']['updated_at'] = $ds[0]['updated_at'];
 
-		return $response;	
-	}
+                        $response['data']['resMsg'] = "successfully";
+
+                    } else {
+                        //destroy any previously set cookie
+                        setcookie('username', '', time() - 1 * 24 * 60 * 60);
+                        setcookie('password', '', time() - 1 * 24 * 60 * 60);
+                    }
+
+                } else {
+                    $response['data']['resMsg'] = "Incorrect Credentials, Try again...";
+                }
+            }
+        }
+
+        return $response;
+    }
 }
 
-function resposeError(String $err_code, String $err_txt){
-		$response['error_code'] = $err_code;
-		$response['error_text'] = $err_txt;
+function resposeError($err_code, $err_txt)
+{
+    $response['error_code'] = $err_code;
+    $response['error_text'] = $err_txt;
 }
 
 ?>

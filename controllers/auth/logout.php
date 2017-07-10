@@ -1,28 +1,20 @@
 <?php
 
-// if(!isset($_SESSION['user'])){
-//     header("Location: " . WEB_META_BASE_URL . "auth");
-// }
-session_destroy();
 
-header("Location: " . WEB_META_BASE_URL . "auth");
+if(!isset($_SESSION["user_id"])){
+    header("Location: " . WEB_META_BASE_URL . "index");
+}else if(isset($_SESSION["user_id"])!=""){
+    header("Location: " . WEB_META_BASE_URL . "news");
+}
 
 
-//  if (!isset($_SESSION['user'])) {
-//   header("Location: " + WEB_META_BASE_URL + "auth");
-//  } else if(isset($_SESSION['user'])!="") {
-//   header("Location: home.php");
-//  }
- 
-//  if (isset($_GET['logout'])) {
-//   unset($_SESSION['user']);
-//   session_unset();
-// //   session_destroy();
-//   header("Location: index.php");
-//   exit;
-//  }
+if(isset($_GET['logout'])){
+    unset($_SESSION['user_id']);
+    session_unset();
+    session_destroy();
+    setcookie('username', '', time() - 1*24*60*60);
+    setcookie('password', '', time() - 1*24*60*60);
+    header("Location: " . WEB_META_BASE_URL . "index");
+}
 
-session_destroy();
-header("Location: auth");
-
- ?>
+?>

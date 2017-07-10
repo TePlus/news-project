@@ -1,18 +1,22 @@
-var alertTimeOut = 3000;
+var alertTimeOut = 5000;
 
-$('document').ready(function() {
+$('document').ready(function () {
+    login();
+});
+
+function login() {
 
     // name validation
     var nameregex = /^[a-zA-Z ]+$/;
 
-    $.validator.addMethod("validname", function(value, element) {
+    $.validator.addMethod("validname", function (value, element) {
         return this.optional(element) || nameregex.test(value);
     });
 
     // valid email pattern
     var eregex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 
-    $.validator.addMethod("validemail", function(value, element) {
+    $.validator.addMethod("validemail", function (value, element) {
         return this.optional(element) || eregex.test(value);
     });
 
@@ -21,7 +25,7 @@ $('document').ready(function() {
         rules: {
             password: {
                 required: true,
-                minlength: 8,
+                minlength: 4,
                 maxlength: 15
             },
             username: {
@@ -40,13 +44,13 @@ $('document').ready(function() {
                 minlength: "Your Name is Too Short"
             }
         },
-        errorPlacement: function(error, element) {
+        errorPlacement: function (error, element) {
             $(element).closest('.form-group').find('.help-block').html(error.html());
         },
-        highlight: function(element) {
+        highlight: function (element) {
             $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
         },
-        unhighlight: function(element, errorClass, validClass) {
+        unhighlight: function (element, errorClass, validClass) {
             $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
             $(element).closest('.form-group').find('.help-block').html('');
         },
@@ -55,7 +59,7 @@ $('document').ready(function() {
     /* validation */
 
     function submitForm() {
-        $("#btn-login").click(function(e) {
+        $("#btn-login").click(function (e) {
 
             action = "#form";
 
@@ -66,33 +70,38 @@ $('document').ready(function() {
             console.log(password);
 
             $.ajax({
+                cache: false,
+                timeout: 5000,
                 dataType: 'json',
                 type: 'POST',
-                url: BASE_URL + "controllers/auth/cmd.php?" + username,
+                url: BASE_URL + "controllers/auth/cmd.php?" + username + "?" + password,
                 data: {
                     "cmd": "login",
                     "username": username,
                     "password": password
                 },
-                beforeSend: function() {
-                    $("#error").fadeOut();
-                    $("#btn-login").html('<span class="glyphicon glyphicon-transfer"></span> &nbsp; sending ...');
+                beforeSend: function () {
+                    $("#btn-login").html('sending ...');
                 },
-                success: function(res) {
-                    console.log(res.data);
-
-                    window.location = "news";
-
-                    // if (res.data.status === "admin") {
-
-                    // } else {
-                    //     $("#error").fadeIn(1000, function() {
-                    //         $("#error").html('<div class="alert alert-danger"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; ' + response + ' !</div>');
-                    //     });
-                    // }
+                success: function (res) {
+                    console.log(res.status);
+                    if (res.status == false) {
+                        toastr.clear()
+                        toastr.error("" + res.data.resMsg, 'Error Alert', {timeOut: alertTimeOut});
+                        $("#btn-login").html('Login');
+                    } else {
+                        toastr.clear()
+                        toastr.success(res.data.resMsg, 'Success Alert', {timeOut: alertTimeOut});
+                        window.location = "news";
+                    }
+                },
+                error: function (res) {
+                    var errors = res.responseJSON;
+                    console.log(errors);
+                    // Render the errors with js ...
                 }
             });
             return false;
         });
     }
-});
+}

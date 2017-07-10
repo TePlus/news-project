@@ -2,31 +2,34 @@
 mb_internal_encoding("UTF-8");
 
 // Define WEB_META_BASE_URL
-$HTTP_REFERER = isset($_SERVER["HTTP_REFERER"])?$_SERVER["HTTP_REFERER"]:'http://' . @$_SERVER["SERVER_NAME"] . '/';
+$HTTP_REFERER = isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : 'http://' . @$_SERVER["SERVER_NAME"] . '/';
 list($HTTP_PROTOCAL) = explode(':', $HTTP_REFERER);
-if(empty($HTTP_PROTOCAL)) $HTTP_PROTOCAL = 'http';
+if (empty($HTTP_PROTOCAL)) $HTTP_PROTOCAL = 'http';
 
-define("WEB_REWRITE_BASE",  "/skeleton");
-define("WEB_META_BASE_URL",  $HTTP_PROTOCAL."://" . @$_SERVER["SERVER_NAME"] .WEB_REWRITE_BASE. "/");
-define("BASE_API",  "http://prospect-api.orisma.alpha/");
-define("WEB_META_BASE_API",  BASE_API."v1/");
-define("WEB_META_BASE_API_DOC",  BASE_API."doc/");
-define("WEB_APP_CALL_API",  WEB_META_BASE_URL."service/call_api.php");
-define("WEB_INDEX_PAGE",  "index");
-define("LANG",  "");
-define("WEB_META_BASE_LANG",  "");
+define("WEB_REWRITE_BASE", "/skeleton");
+define("WEB_META_BASE_URL", $HTTP_PROTOCAL . "://" . @$_SERVER["SERVER_NAME"] . WEB_REWRITE_BASE . "/");
+define("BASE_API", "http://prospect-api.orisma.alpha/");
+define("WEB_META_BASE_API", BASE_API . "v1/");
+define("WEB_META_BASE_API_DOC", BASE_API . "doc/");
+define("WEB_APP_CALL_API", WEB_META_BASE_URL . "service/call_api.php");
+define("WEB_INDEX_PAGE", "index");
+define("LANG", "");
+define("WEB_META_BASE_LANG", "");
 
 
-define("COOKIE_DOMAIN", "." . @$_SERVER["SERVER_NAME"] );
+define("COOKIE_DOMAIN", "." . @$_SERVER["SERVER_NAME"]);
 define("ENCRYPT_INIT_KEY", "13579defabc12345");
 define("ENCRYPT_INIT_VECTOR", "de12fa890c79b387");
 define("MONGO_HOST", "localhost");
 define("MONGO_PORT", "27017");
 define("MONGO_DB", "SCB15B-PROSPECT");
 define("ENABLE_LANG", false);
-define("UID_LIFE_TIME", time() + 10*60*1000);
+define("UID_LIFE_TIME", time() + 10 * 60 * 1000);
 define("LIMIT_EXPORT_DATA", 3);
 
+/** Myself */
+// set time zone
+date_default_timezone_set('Asia/Bangkok');
 
 // --------- CUSTOM FIELD TYPE ---------- //
 $all_custom_field_type = array();
@@ -67,11 +70,11 @@ $all_custom_field_type['datetime'] = "Date time";
 define("ALL_CUSTOM_FIELD_TYPE", json_encode($all_custom_field_type));
 
 $all_event = array();
-$all_event['all_event'] = array("website","sms","email");
+$all_event['all_event'] = array("website", "sms", "email");
 $all_event['event_mapping'] = array();
-$all_event['event_mapping']['website'] = array("website"=>"");
-$all_event['event_mapping']['sms'] = array("sms"=>"");
-$all_event['event_mapping']['email'] = array("open_email"=>"Open email","click_email"=>"Click link");
+$all_event['event_mapping']['website'] = array("website" => "");
+$all_event['event_mapping']['sms'] = array("sms" => "");
+$all_event['event_mapping']['email'] = array("open_email" => "Open email", "click_email" => "Click link");
 
 define("ALL_EVENT_TYPE", json_encode($all_event));
 // -------------------------------------- //
@@ -121,12 +124,12 @@ $tmp_custom_field_criteria['segment_type'] = "number";
 $tmp_custom_field_criteria['segment_value'] = "";
 $FIX_CUSTOM_FIELD_CRITERIA['score_segment'][] = $tmp_custom_field_criteria;
 
-define('FIX_CUSTOM_FIELD_CRITERIA',json_encode($FIX_CUSTOM_FIELD_CRITERIA));
+define('FIX_CUSTOM_FIELD_CRITERIA', json_encode($FIX_CUSTOM_FIELD_CRITERIA));
 
-$ALL_FIXED_FIELD = array("campaign_01","event_02","event_04","score_01","score_02");
-define('ALL_FIXED_FIELD',json_encode($ALL_FIXED_FIELD));
+$ALL_FIXED_FIELD = array("campaign_01", "event_02", "event_04", "score_01", "score_02");
+define('ALL_FIXED_FIELD', json_encode($ALL_FIXED_FIELD));
 
-define('NO_EMAIL_FIELD_TEXT',"UNKNOWN");
+define('NO_EMAIL_FIELD_TEXT', "UNKNOWN");
 
 
 ?>

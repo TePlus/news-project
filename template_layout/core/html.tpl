@@ -5,7 +5,7 @@
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-	<title><?=$OMPage->getVar("window_title")?></title>
+	<title><?=$OMPage->getVar("News")?></title>
 	<meta name="description" content="<?=$OMPage->getVar("window_description")?>" />
 	<meta name="keywords" content="<?=$OMPage->getVar("window_keywords")?>" />
 	<link rel="shortcut icon" href="<?=WEB_META_BASE_URL?>favicon.ico" />
@@ -24,7 +24,7 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
-	
+
 	<meta property="fb:app_id" content="<?=$OMPage->getVar("fb_app_id")?>"/>
 	<meta property="og:site_name" content="<?=$OMPage->getVar("og_site_name")?>"/>
 	<meta property="og:type" content="<?=$OMPage->getVar("og_type")?>"/>
@@ -51,7 +51,7 @@
 	<?php
 		}
 	?>
-	
+
 	<base href="<?=WEB_META_BASE_URL?>" />
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
